@@ -1,0 +1,9 @@
+name: MasterServer
+version: '0.0.0'
+main: asia.buildtheearth.asean.MasterServer
+api-version: '1.13'
+prefix: MasterServer
+authors: [tintinkung]
+depend: [DiscordSRV-Ascension, FastAsyncWorldEdit]
+description: Server management plugin for ASEAN BTE Master Server
+website: https://github.com/ASEAN-Build-The-Earth/master-server
