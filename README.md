@@ -18,6 +18,11 @@ There are some third party libraries which are directly included in the source c
   > licensed under the GNU General Public License v3
   > **https://discordsrv.com/**
   > **https://github.com/DiscordSRV/Ascension**
-  - package `com.discordsrv.common.util.*`<br/>
-  - package `com.discordsrv.common.core.scheduler.*`<br/>
-  - class `com.discordsrv.common.discord.api.entity.message.util.SendableDiscordMessageUtil`
+  - package [`com.discordsrv.common.util.function.*`](https://github.com/DiscordSRV/Ascension/tree/00bc363d472cbb52d3c872c187ce434722bddc02/common/src/main/java/com/discordsrv/common/util/function)
+  - package [`com.discordsrv.common.core.scheduler.*`](https://github.com/DiscordSRV/Ascension/tree/00bc363d472cbb52d3c872c187ce434722bddc02/common/src/main/java/com/discordsrv/common/core/scheduler)
+  - class [`com.discordsrv.common.util.ComponentUtil`](https://github.com/DiscordSRV/Ascension/blob/00bc363d472cbb52d3c872c187ce434722bddc02/common/src/main/java/com/discordsrv/common/util/ComponentUtil.java)
+  - class [`com.discordsrv.common.util.TaskUtil`](https://github.com/DiscordSRV/Ascension/blob/00bc363d472cbb52d3c872c187ce434722bddc02/common/src/main/java/com/discordsrv/common/util/TaskUtil.java)
+  - class [`com.discordsrv.common.discord.api.entity.message.util.SendableDiscordMessageUtil`](https://github.com/DiscordSRV/Ascension/blob/00bc363d472cbb52d3c872c187ce434722bddc02/common/src/main/java/com/discordsrv/common/discord/api/entity/message/util/SendableDiscordMessageUtil.java)
+  - class [`com.discordsrv.common.command.combined.abstraction.Text`](https://github.com/DiscordSRV/Ascension/blob/00bc363d472cbb52d3c872c187ce434722bddc02/common/src/main/java/com/discordsrv/common/command/combined/abstraction/Text.java)
+  - class [`com.discordsrv.common.command.combined.abstraction.CommandExecution`](https://github.com/DiscordSRV/Ascension/blob/00bc363d472cbb52d3c872c187ce434722bddc02/common/src/main/java/com/discordsrv/common/command/combined/abstraction/CommandExecution.java)
+  - class [`com.discordsrv.common.command.combined.abstraction.DiscordCommandExecution`](https://github.com/DiscordSRV/Ascension/blob/00bc363d472cbb52d3c872c187ce434722bddc02/common/src/main/java/com/discordsrv/common/command/combined/abstraction/DiscordCommandExecution.java)

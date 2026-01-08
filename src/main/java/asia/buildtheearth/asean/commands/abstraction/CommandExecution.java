@@ -1,5 +1,3 @@
-package asia.buildtheearth.asean.commands.abstraction;
-
 /*
  * This file is part of DiscordSRV, licensed under the GPLv3 License
  * Copyright (c) 2016-2025 Austin "Scarsz" Shapiro, Henri "Vankka" Schubin and DiscordSRV contributors
@@ -17,8 +15,8 @@ package asia.buildtheearth.asean.commands.abstraction;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 // package com.discordsrv.common.command.combined.abstraction;
+package asia.buildtheearth.asean.commands.abstraction;
 
 import asia.buildtheearth.asean.utils.ComponentUtil;
 import com.discordsrv.api.component.MinecraftComponent;
