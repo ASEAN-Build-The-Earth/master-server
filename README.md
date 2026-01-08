@@ -14,6 +14,10 @@ Third party libraries
 ---------------------
 There are some third party libraries which are directly included in the source code tree, in particular:
 
-* DiscordSRV: Discord bridging plugin for minecraft. <br/>(GNU General Public License v3)
-  * **https://discordsrv.com/**<br/>
-  * **https://github.com/DiscordSRV/Ascension**
+* DiscordSRV: Discord bridging plugin for minecraft.
+  > licensed under the GNU General Public License v3
+  > **https://discordsrv.com/**
+  > **https://github.com/DiscordSRV/Ascension**
+  - package `com.discordsrv.common.util.*`<br/>
+  - package `com.discordsrv.common.core.scheduler.*`<br/>
+  - class `com.discordsrv.common.discord.api.entity.message.util.SendableDiscordMessageUtil`

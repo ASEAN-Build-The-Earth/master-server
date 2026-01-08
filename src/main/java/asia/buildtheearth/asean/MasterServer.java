@@ -1,6 +1,7 @@
 package asia.buildtheearth.asean;
 
 import asia.buildtheearth.asean.core.DiscordSRVListener;
+import asia.buildtheearth.asean.core.scheduler.BukkitScheduler;
 import com.discordsrv.api.DiscordSRV;
 import com.discordsrv.api.module.Module;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,10 +17,16 @@ public final class MasterServer extends JavaPlugin {
 
     private static MasterServer plugin;
 
+    private final BukkitScheduler scheduler = new BukkitScheduler(this);
+
     private DiscordSRVListener discordSrvHook = null;
 
     public static MasterServer getPlugin() {
         return plugin;
+    }
+
+    public BukkitScheduler scheduler() {
+        return scheduler;
     }
 
     @Override
