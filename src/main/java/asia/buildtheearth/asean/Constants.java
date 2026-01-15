@@ -3,9 +3,6 @@ package asia.buildtheearth.asean;
 import java.awt.Color;
 
 public abstract class Constants {
-    /** Discord Guild ID of ASEAN Build-The-Earth because I'm lazy to expose this to config */
-    public static final long MAIN_GUILD_ID = 000000000000000000L;
-
     /** Red accent color (HEX: #{@code DD2E44FF})*/
     public static final Color RED    = new Color(14495300);
 

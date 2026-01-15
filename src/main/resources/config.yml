@@ -1,0 +1,29 @@
+
+# ========================
+# Main Discord Server Guild ID
+# ========================
+main-guild-id: ""
+
+# ========================
+# System Notification Settings
+# ========================
+notification:
+  channel-id: ""
+
+# ========================
+# Master Server Database
+# ========================
+# url: the database connection URL (JDBC)
+#     Supported URL:
+#     <proto>:<engine>://<HOST>:<PORT>/?<params>
+#     jdbc:mariadb://127.0.0.1:8000/
+#     jdbc:mysql://github.tintinkung.com/
+# name: The database name
+# username: Database account name
+# password: Database password
+database:
+  url: ""
+  name: ""
+  username: ""
+  password: ""
+  table-name: ""

@@ -21,7 +21,7 @@ public class TestDiscordCommand {
 
             INSTANCE = builder
                     .setContexts(true, false)
-                    .setGuildId(Constants.MAIN_GUILD_ID)
+                    .setGuildId(plugin.getMainGuildID())
                     .setDefaultPermission(DiscordCommand.DefaultAccess.ADMINISTRATOR)
                     .build();
         }

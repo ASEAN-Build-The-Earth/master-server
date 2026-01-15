@@ -1,17 +1,24 @@
 package asia.buildtheearth.asean;
 
 import asia.buildtheearth.asean.core.DiscordSRVListener;
+import asia.buildtheearth.asean.core.io.LangConfiguration;
+import asia.buildtheearth.asean.core.io.LanguageFile;
 import asia.buildtheearth.asean.core.scheduler.BukkitScheduler;
 import com.discordsrv.api.DiscordSRV;
 import com.discordsrv.api.module.Module;
+import com.discordsrv.dependencies.net.dv8tion.jda.internal.utils.Checks;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.function.Consumer;
 
-public final class MasterServer extends JavaPlugin {
+public class MasterServer extends JavaPlugin {
 
     public static final String DISCORD_SRV_SYMBOL = "DiscordSRV-Ascension";
 
@@ -21,6 +28,12 @@ public final class MasterServer extends JavaPlugin {
 
     private DiscordSRVListener discordSrvHook = null;
 
+    private YamlConfiguration config;
+
+    private LangConfiguration langConfig;
+
+    private long mainGuildID;
+
     public static MasterServer getPlugin() {
         return plugin;
     }
@@ -29,10 +42,31 @@ public final class MasterServer extends JavaPlugin {
         return scheduler;
     }
 
+    public LanguageFile getLang() {
+        return langConfig.get();
+    }
+
+    public LanguageFile getLang(java.util.Locale locale) {
+        return langConfig.get(locale);
+    }
+
+    /**
+     * Main Guild ID set in this plugin's config file<br/>
+     * If the file is edited, use {@link #reloadConfig(File)}.
+     *
+     * @return The main guild as unsigned-long
+     */
+    public long getMainGuildID() {
+        return mainGuildID;
+    }
+
     @Override
     public void onEnable() {
         // Initialize plugin reference
         plugin = this;
+
+        // Create configs
+        plugin.createConfig();
 
         // Initialize plugin
         Thread initThread = createInitThread();
@@ -97,6 +131,43 @@ public final class MasterServer extends JavaPlugin {
             // disablePlugin("DiscordPlotSystem failed to load properly: " + e);
         });
         return initThread;
+    }
+
+    private void createConfig() {
+        File createConfig = new File(getDataFolder(), "config.yml");
+        if (!createConfig.exists()) {
+            if(createConfig.getParentFile().mkdirs())
+                info("Created MasterServer data directory");
+
+            saveResource("config.yml", false);
+        }
+
+        // Load config from resource to the plugin
+        this.config = new YamlConfiguration();
+        this.langConfig = new LangConfiguration(this);
+        try {
+            this.langConfig.initLanguageFiles();
+            this.reloadConfig(createConfig);
+        } catch (Exception ex) {
+            MasterServer.error("Internal Error occurred when loading config file", ex);
+        }
+    }
+
+    public void reloadConfig(File file) throws IOException, InvalidConfigurationException {
+        this.config.load(file);
+
+        String guildConfig = this.config.getString(ConfigPaths.MAIN_GUILD_ID);
+        if(guildConfig == null) {
+            MasterServer.error(
+                "Server's main guild is not set! " +
+                "Please see '" + config.getCurrentPath()
+                + "' at '" + ConfigPaths.MAIN_GUILD_ID + "'"
+            );
+            return;
+        }
+
+        Checks.isSnowflake(guildConfig);
+        this.mainGuildID = Long.parseUnsignedLong(guildConfig);
     }
 
     public boolean isDiscordSrvHookEnabled() {
