@@ -222,7 +222,15 @@
     <dependency>
       <groupId>asia.buildtheearth.asean.discord</groupId>
       <artifactId>discordsrv-bridge</artifactId>
-      <version>1.1.2</version>
+      <version>2.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <!-- Caching -->
+    <dependency>
+      <groupId>com.github.ben-manes.caffeine</groupId>
+      <artifactId>caffeine</artifactId>
+      <version>3.2.3</version>
+      <scope>compile</scope>
     </dependency>
     <!-- SQLite JDBC Driver (Server's build site data) -->
     <dependency>

@@ -7,6 +7,7 @@ import asia.buildtheearth.asean.core.scheduler.BukkitScheduler;
 import com.discordsrv.api.DiscordSRV;
 import com.discordsrv.api.module.Module;
 import com.discordsrv.dependencies.net.dv8tion.jda.internal.utils.Checks;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
@@ -66,6 +68,18 @@ public class MasterServer extends JavaPlugin {
      */
     public long getMainGuildID() {
         return mainGuildID;
+    }
+
+    /**
+     * Server's Caching strategy
+     * @param <K> Key type
+     * @param <V> Value type
+     * @return A new caffeine builder
+     */
+    @SuppressWarnings("unchecked")
+    public <K, V> Caffeine<K, V> caffeineBuilder() {
+        ExecutorService executor = scheduler().executorService();
+        return (Caffeine<K, V>) Caffeine.newBuilder().executor(executor);
     }
 
     @Override
