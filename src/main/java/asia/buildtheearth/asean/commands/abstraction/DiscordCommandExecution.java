@@ -19,6 +19,7 @@
 package asia.buildtheearth.asean.commands.abstraction;
 
 import asia.buildtheearth.asean.MasterServer;
+import asia.buildtheearth.asean.core.providers.PluginProvider;
 import asia.buildtheearth.asean.utils.SendableDiscordMessageUtil;
 import com.discordsrv.api.discord.entity.DiscordUser;
 import com.discordsrv.api.discord.entity.message.SendableDiscordMessage;
@@ -39,9 +40,7 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DiscordCommandExecution implements CommandExecution {
-
-    private final MasterServer plugin;
+public class DiscordCommandExecution extends PluginProvider implements CommandExecution {
     private final AbstractInteractionEvent<?> event;
 
     private final CommandInteractionPayload interactionPayload;
@@ -51,7 +50,7 @@ public class DiscordCommandExecution implements CommandExecution {
     private final AtomicReference<InteractionHook> hook = new AtomicReference<>();
 
     public DiscordCommandExecution(MasterServer plugin, DiscordChatInputInteractionEvent event) {
-        this.plugin = plugin;
+        super(plugin);
         this.event = event;
         this.interactionPayload = event.asJDA();
         this.replyCallback = event.asJDA();
@@ -81,7 +80,6 @@ public class DiscordCommandExecution implements CommandExecution {
         return interactionPayload.getOption(label, null, OptionMapping::getAsBoolean);
     }
 
-    @Override
     public Message.Attachment getAttachment(String label) {
         return interactionPayload.getOption(label, null, OptionMapping::getAsAttachment);
     }

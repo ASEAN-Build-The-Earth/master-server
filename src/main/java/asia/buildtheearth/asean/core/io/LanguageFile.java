@@ -20,7 +20,7 @@ public class LanguageFile extends YamlConfiguration {
     }
 
     @NotNull
-    public <T extends ConfigEntry> String get(@NotNull T config) {
+    public <T extends LangEntry> String get(@NotNull T config) {
         return this.getString(config.getKey(), NULL_LANG);
     }
 
@@ -36,20 +36,20 @@ public class LanguageFile extends YamlConfiguration {
     }
 
     @NotNull
-    public <T extends ConfigEntry> EmbedLang getEmbed(@NotNull T config) {
+    public <T extends LangEntry> EmbedLang getEmbed(@NotNull T config) {
         return this.getEmbed(config.getKey(), NULL_LANG);
     }
 
     @NotNull
-    public <T extends ConfigEntry> EmbedLang getEmbed(@NotNull T config,
-                                                      @Nullable String defaultValue) {
+    public <T extends LangEntry> EmbedLang getEmbed(@NotNull T config,
+                                                    @Nullable String defaultValue) {
         return this.getEmbed(config.getKey(), defaultValue);
     }
 
     @NotNull
-    public <T extends ConfigEntry> EmbedBuilder getEmbedBuilder(@NotNull T config,
-                                                                @NotNull Function<String, String> title,
-                                                                @NotNull Function<String, String> description) {
+    public <T extends LangEntry> EmbedBuilder getEmbedBuilder(@NotNull T config,
+                                                              @NotNull Function<String, String> title,
+                                                              @NotNull Function<String, String> description) {
         List<String> lang = this.getStringList(config.getKey());
         EmbedBuilder embed = new EmbedBuilder();
 
@@ -60,13 +60,13 @@ public class LanguageFile extends YamlConfiguration {
     }
 
     @NotNull
-    public <T extends ConfigEntry> EmbedBuilder getEmbedBuilder(@NotNull T config) {
+    public <T extends LangEntry> EmbedBuilder getEmbedBuilder(@NotNull T config) {
         return this.getEmbedBuilder(config, Function.identity(), Function.identity());
     }
 
     @NotNull
-    public <T extends ConfigEntry> EmbedBuilder getEmbedBuilder(@NotNull T config,
-                                                                @NotNull Function<String, String> description) {
+    public <T extends LangEntry> EmbedBuilder getEmbedBuilder(@NotNull T config,
+                                                              @NotNull Function<String, String> description) {
         return this.getEmbedBuilder(config, Function.identity(), description);
 
     }

@@ -21,7 +21,6 @@ package asia.buildtheearth.asean.commands.abstraction;
 import asia.buildtheearth.asean.utils.ComponentUtil;
 import com.discordsrv.api.component.MinecraftComponent;
 import com.discordsrv.api.discord.entity.message.SendableDiscordMessage;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.entities.Message;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +38,6 @@ public interface CommandExecution {
     String getID();
     String getString(String label);
     Boolean getBoolean(String label);
-    Message.Attachment getAttachment(String label);
 
     default void send(Text... texts) {
         send(Arrays.asList(texts));

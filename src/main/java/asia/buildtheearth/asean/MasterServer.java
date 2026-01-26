@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 public class MasterServer extends JavaPlugin {
@@ -48,6 +51,11 @@ public class MasterServer extends JavaPlugin {
 
     public LanguageFile getLang(java.util.Locale locale) {
         return langConfig.get(locale);
+    }
+
+    public <T, V> Map<Locale, T> getLang(@NotNull V v,
+                                         @NotNull BiFunction<LanguageFile, V, T> resolver) {
+        return this.langConfig.get(v, resolver);
     }
 
     /**
@@ -134,12 +142,19 @@ public class MasterServer extends JavaPlugin {
     }
 
     private void createConfig() {
+        // Initial data directory
         File createConfig = new File(getDataFolder(), "config.yml");
         if (!createConfig.exists()) {
             if(createConfig.getParentFile().mkdirs())
                 info("Created MasterServer data directory");
 
             saveResource("config.yml", false);
+        }
+
+        // Cache directory
+        File cacheDir = new File(getDataFolder(), "cache");
+        if (!cacheDir.exists() || (cacheDir.exists() && !cacheDir.isDirectory())) {
+            if(cacheDir.mkdirs()) info("Created MasterServer cache directory");
         }
 
         // Load config from resource to the plugin

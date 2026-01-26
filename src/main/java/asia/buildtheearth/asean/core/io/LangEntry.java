@@ -5,7 +5,7 @@ package asia.buildtheearth.asean.core.io;
  *
  * @see #getKey()
  */
-public interface ConfigEntry {
+public interface LangEntry {
 
     /**
      * Get the YAML path of this language config

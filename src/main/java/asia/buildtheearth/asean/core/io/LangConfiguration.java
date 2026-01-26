@@ -2,6 +2,7 @@ package asia.buildtheearth.asean.core.io;
 
 import asia.buildtheearth.asean.MasterServer;
 import asia.buildtheearth.asean.core.providers.PluginProvider;
+import com.discordsrv.dependencies.net.dv8tion.jda.internal.utils.Helpers;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,9 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class LangConfiguration extends PluginProvider {
@@ -41,6 +41,34 @@ public class LangConfiguration extends PluginProvider {
     public LanguageFile get(@NotNull Locale locale) {
         if(this.lang == null) return null;
         return this.lang.get(locale.toLanguageTag());
+    }
+
+    /**
+     * Collect all language in all registered locales.
+     * @param key Config key to be resolved
+     * @param resolver Resolving function to collect each locale to
+     * @return  Language file definition or {@code null}
+     * @param <K> Key type to get
+     * @param <V> The resolving function of type {@link LanguageFile}
+     */
+    public <K, V> Map<Locale, V> get(@NotNull K key,
+                                     @NotNull BiFunction<LanguageFile, K, V> resolver) {
+        Map<Locale, V> map = new HashMap<>();
+
+        if(this.lang != null) {
+            this.lang.entrySet().iterator().forEachRemaining(entry -> {
+                Locale locale = Locale.forLanguageTag(entry.getKey());
+                V value = resolver.apply(entry.getValue(), key);
+
+                if(value == null) return;
+
+                if(value instanceof String seq && Helpers.isBlank(seq)) return;
+
+                map.put(locale, value);
+            });
+        }
+
+        return Collections.unmodifiableMap(map);
     }
 
     /**
