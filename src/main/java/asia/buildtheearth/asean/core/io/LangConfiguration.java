@@ -2,7 +2,7 @@ package asia.buildtheearth.asean.core.io;
 
 import asia.buildtheearth.asean.MasterServer;
 import asia.buildtheearth.asean.core.providers.PluginProvider;
-import com.discordsrv.dependencies.net.dv8tion.jda.internal.utils.Helpers;
+import net.dv8tion.jda.internal.utils.Helpers;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 

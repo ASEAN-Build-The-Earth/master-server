@@ -1,0 +1,4 @@
+[submodule "DiscordSRV-Ascension"]
+	path = discordsrv-ascension
+	url = https://github.com/tintinkung/DiscordSRV-Ascension.git
+	branch = dev

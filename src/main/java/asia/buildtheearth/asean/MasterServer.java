@@ -6,7 +6,7 @@ import asia.buildtheearth.asean.core.io.LanguageFile;
 import asia.buildtheearth.asean.core.scheduler.BukkitScheduler;
 import com.discordsrv.api.DiscordSRV;
 import com.discordsrv.api.module.Module;
-import com.discordsrv.dependencies.net.dv8tion.jda.internal.utils.Checks;
+import net.dv8tion.jda.internal.utils.Checks;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;

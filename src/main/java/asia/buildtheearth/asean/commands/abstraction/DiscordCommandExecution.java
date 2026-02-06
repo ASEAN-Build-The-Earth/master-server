@@ -25,12 +25,12 @@ import com.discordsrv.api.discord.entity.DiscordUser;
 import com.discordsrv.api.discord.entity.message.SendableDiscordMessage;
 import com.discordsrv.api.events.discord.interaction.AbstractInteractionEvent;
 import com.discordsrv.api.events.discord.interaction.command.DiscordChatInputInteractionEvent;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.entities.Message;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.interactions.InteractionHook;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.interactions.commands.CommandInteractionPayload;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.interactions.commands.OptionMapping;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.utils.messages.MessageCreateData;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.interactions.InteractionHook;
+import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
+import net.dv8tion.jda.api.interactions.commands.CommandInteractionPayload;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
 

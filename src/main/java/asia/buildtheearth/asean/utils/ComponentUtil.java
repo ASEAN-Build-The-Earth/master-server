@@ -28,6 +28,7 @@ import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 // import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 // import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +49,7 @@ public final class ComponentUtil {
 
     @NotNull
     private static MinecraftComponentAdapter<Component> adapter() {
-        return ADAPTER != null ? ADAPTER : (Objects.requireNonNull(ADAPTER = MinecraftComponentAdapter.unrelocated()));
+        return ADAPTER != null ? ADAPTER : (ADAPTER = MinecraftComponentAdapter.create(GsonComponentSerializer.class, Component.class));
     }
 
 //    public static boolean isEmpty(@NotNull Component component) {

@@ -22,11 +22,11 @@ import com.discordsrv.api.discord.entity.JDAEntity;
 import com.discordsrv.api.discord.entity.message.AllowedMention;
 import com.discordsrv.api.discord.entity.message.DiscordMessageEmbed;
 import com.discordsrv.api.discord.entity.message.SendableDiscordMessage;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.components.MessageTopLevelComponent;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.entities.Message;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.entities.MessageEmbed;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.utils.FileUpload;
-import com.discordsrv.dependencies.net.dv8tion.jda.api.utils.messages.*;
+import net.dv8tion.jda.api.components.MessageTopLevelComponent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.utils.FileUpload;
+import net.dv8tion.jda.api.utils.messages.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;

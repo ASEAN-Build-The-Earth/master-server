@@ -1,6 +1,6 @@
 package asia.buildtheearth.asean.core.io;
 
-import com.discordsrv.dependencies.net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
