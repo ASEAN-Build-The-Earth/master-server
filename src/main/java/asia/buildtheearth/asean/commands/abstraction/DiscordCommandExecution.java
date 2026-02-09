@@ -22,11 +22,13 @@ import asia.buildtheearth.asean.MasterServer;
 import asia.buildtheearth.asean.core.providers.PluginProvider;
 import asia.buildtheearth.asean.utils.SendableDiscordMessageUtil;
 import com.discordsrv.api.discord.entity.DiscordUser;
+import com.discordsrv.api.discord.entity.interaction.component.impl.DiscordModal;
 import com.discordsrv.api.discord.entity.message.SendableDiscordMessage;
 import com.discordsrv.api.events.discord.interaction.AbstractInteractionEvent;
 import com.discordsrv.api.events.discord.interaction.command.DiscordChatInputInteractionEvent;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.InteractionHook;
+import net.dv8tion.jda.api.interactions.callbacks.IModalCallback;
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import net.dv8tion.jda.api.interactions.commands.CommandInteractionPayload;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -39,12 +41,14 @@ import java.util.EnumMap;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public class DiscordCommandExecution extends PluginProvider implements CommandExecution {
     private final AbstractInteractionEvent<?> event;
 
     private final CommandInteractionPayload interactionPayload;
     private final IReplyCallback replyCallback;
+    private final IModalCallback modalCallback;
 
     private final AtomicBoolean isEphemeral = new AtomicBoolean(true);
     private final AtomicReference<InteractionHook> hook = new AtomicReference<>();
@@ -52,8 +56,10 @@ public class DiscordCommandExecution extends PluginProvider implements CommandEx
     public DiscordCommandExecution(MasterServer plugin, DiscordChatInputInteractionEvent event) {
         super(plugin);
         this.event = event;
+        // Fork internal executable interfaces
         this.interactionPayload = event.asJDA();
         this.replyCallback = event.asJDA();
+        this.modalCallback = event.asJDA();
     }
 
     public DiscordUser getUser() {
@@ -161,6 +167,13 @@ public class DiscordCommandExecution extends PluginProvider implements CommandEx
         replyCallback.deferReply(isEphemeral.get()).queue(ih -> {
             hook.set(ih);
             plugin.scheduler().run(runnable);
+        });
+    }
+
+    public void executeModal(Supplier<DiscordModal> modalSupplier) {
+        plugin.scheduler().run(() -> {
+            DiscordModal modal = modalSupplier.get();
+            modalCallback.replyModal(modal.asJDA()).queue();
         });
     }
 }
