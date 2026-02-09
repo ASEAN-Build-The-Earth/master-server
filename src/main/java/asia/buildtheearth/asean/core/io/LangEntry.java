@@ -5,6 +5,7 @@ package asia.buildtheearth.asean.core.io;
  *
  * @see #getKey()
  */
+@FunctionalInterface
 public interface LangEntry {
 
     /**

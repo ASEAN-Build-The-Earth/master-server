@@ -6,13 +6,25 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class LanguageFile extends YamlConfiguration {
 
     public static final String NULL_LANG = "undefined";
 
-    public record EmbedLang(String title, String description) {};
+    public record EmbedLang(String title, String description) {
+        /**
+         * Consume The information "as" something else.
+         *
+         * @param consumer consumer function
+         * @param <T> Result of the consumption
+         * @return The consumer {@linkplain BiFunction#apply(Object, Object) applied}
+         */
+        public <T> T as(@NotNull BiFunction<String, String, T> consumer) {
+            return consumer.apply(title(), description());
+        }
+    };
 
     @NotNull
     public String get(@NotNull String key) {

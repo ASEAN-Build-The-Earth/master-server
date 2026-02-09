@@ -1,0 +1,62 @@
+slash-commands:
+  export:
+    name: "export"
+    description: "Export Geo-spatial Data"
+    export-geojson: "Export GeoJSON file"
+    export-kml: "Export Google-Earth KML file"
+    export-schematic: "Export Minecraft Schematic file"
+    options:
+      pattern: "Block pattern to apply"
+      height: "Height (Y-Level) To export the data at"
+      file: "Source file attachment to export"
+    modal:
+      title: "Exporting {file} File"
+      description: "Make sure all options are correct"
+      options:
+        height:
+          - "Height"
+          - "Height (or Y-Level) in meters where the geometry data coordinates will be placed."
+        y-placement:
+          label:
+            - "Height Options"
+            - "Select how the height (Y-Level) should be applied."
+          normalize:
+            - "Normalize"
+            - "Fixed as one and only one value"
+          offset:
+            - "Offset"
+            - "Retain existing Y-level (if any) and add an offset"
+          drop:
+            - "Drop"
+            - "Drop the height (Y-Level) as NaN"
+        pattern:
+          - "Block Pattern"
+          - "WorldEdit compatible pattern to draw the geometry as."
+        file-hint:
+          label:
+            - "File Format Hint"
+            - "Hint the format of the source file to export. (unavailable formats are unsupported)"
+          geojson:
+            - "GeoJSON (.geojson)"
+            - "Fixed as one and only one value"
+          kml:
+            - "KML (.kml)"
+            - "Retain existing Y-level (if any) and add an offset"
+          schematic:
+            - "Minecraft Schematic"
+            - "(.schem, .schematic, .mcedit, .mce)"
+          fast-schematic:
+            - "FAWE Schematic V{count} (.schem)"
+            - "Optimized FastAsyncWorldEdit schematic"
+          sponge-schematic:
+            - "Sponge Schematic V{count} (.schematic)"
+            - "Standard WorldEdit schematic"
+          mc-edit-schematic:
+            - "MCEdit Schematic (.schematic, .mcedit, .mce)"
+            - "Legacy WorldEdit schematic"
+        file:
+          - "Source File"
+          - "File to export the data from. Supports geojson, kml."
+        file-if-uploaded:
+          - "Source File Uploaded!"
+          - "Using information from {filename} to exports."
