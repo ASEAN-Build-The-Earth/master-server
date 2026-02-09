@@ -135,8 +135,8 @@ public class MasterServer extends JavaPlugin {
 
         DiscordSRV.optional().ifPresentOrElse(api -> {
             // If DiscordSRV JDA is ready before this plugin finish initializing
-            api.registerModule(discordSrvHook = new DiscordSRVListener(this, api));
-
+            discordSrvHook = new DiscordSRVListener(this, api);
+            discordSrvHook.register();
             info("Subscribed to DiscordSRV.");
         }, () -> error("Instance for DiscordSRV does not exist. Did it started correctly?"));
     }

@@ -1,15 +1,18 @@
 package asia.buildtheearth.asean.core;
 
-import com.discordsrv.api.discord.DiscordAPI;
+import asia.buildtheearth.asean.MasterServer;
+import asia.buildtheearth.asean.core.providers.PluginForDiscordSRV;
 import com.discordsrv.api.module.Module;
 import com.discordsrv.api.DiscordSRV;
 
-public abstract class AbstractModule<API extends DiscordSRV> implements Module {
+public abstract class AbstractModule extends PluginForDiscordSRV implements Module {
 
-    protected final API api;
+    public AbstractModule(MasterServer plugin, DiscordSRV api) {
+        super(plugin, api);
+    }
 
-    public AbstractModule(API api) {
-        this.api = api;
+    public AbstractModule(PluginForDiscordSRV plugin) {
+        super(plugin);
     }
 
     @Override
@@ -17,7 +20,7 @@ public abstract class AbstractModule<API extends DiscordSRV> implements Module {
         return getClass().getName();
     }
 
-    public final DiscordAPI discordAPI() {
-        return this.api.discordAPI();
+    public final void register() {
+        this.api.registerModule(this);
     }
 }
