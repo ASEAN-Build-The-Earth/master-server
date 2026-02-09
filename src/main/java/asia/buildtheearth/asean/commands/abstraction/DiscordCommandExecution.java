@@ -72,16 +72,24 @@ public class DiscordCommandExecution extends PluginProvider implements CommandEx
 
     @Override
     public String getString(String label) {
-        return interactionPayload.getOption(label, null, OptionMapping::getAsString);
+        OptionMapping mapping = interactionPayload.getOption(label);
+        return mapping != null ? mapping.getAsString() : null;
     }
 
     @Override
     public Boolean getBoolean(String label) {
-        return interactionPayload.getOption(label, null, OptionMapping::getAsBoolean);
+        OptionMapping mapping = interactionPayload.getOption(label);
+        return mapping != null ? mapping.getAsBoolean() : null;
     }
 
     public Message.Attachment getAttachment(String label) {
-        return interactionPayload.getOption(label, null, OptionMapping::getAsAttachment);
+        OptionMapping mapping = interactionPayload.getOption(label);
+        return mapping != null ? mapping.getAsAttachment() : null;
+    }
+
+    public Long getLong(String label) {
+        OptionMapping mapping = interactionPayload.getOption(label);
+        return mapping != null ? mapping.getAsLong() : null;
     }
 
     public String getID() {
