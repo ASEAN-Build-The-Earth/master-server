@@ -1,14 +1,37 @@
 slash-commands:
-  export:
+  # Common interaction languages
+  interactions:
+    button:
+      confirm: "Confirm"
+      dismiss: "Dismiss"
+      edit: "Edit"
+      cancel:  "Cancel"
+    authorisation:
+      denied-no-permission: "Permission **{value}** required to use this command"
+      denied-required-role: "One of role **{value}** required to use this command"
+      denied-not-linked: "You need to link your account with master server to use this command."
+      denied-not-official-builder: "You need to become {value} to use this command."
+      denied-command-is-disabled: "Sorry, the command is disabled at the moment."
+  geo-tools:
+    name: "geotools"
+    description: "Tools for drawing/exporting geo spatial data"
+    options:
+      pattern: "Block pattern to apply"
+      private: "Export privately, final file will NOT be persistent"
+      height: "Height (Y-Level) To export the data at"
+      file: "Source file attachment to export"
+  geo-tools-draw:
+    name: "draw"
+    description: "Tools for drawing/exporting geo spatial data"
+    messages:
+      player-not-online: "Please be online inside Master Server to proceed, you need to monitor the drawing process."
+      player-not-found: "Player not found for linked UUID, have you ever joined the server?"
+  geo-tools-export:
     name: "export"
     description: "Export Geo-spatial Data"
     export-geojson: "Export GeoJSON file"
     export-kml: "Export Google-Earth KML file"
     export-schematic: "Export Minecraft Schematic file"
-    options:
-      pattern: "Block pattern to apply"
-      height: "Height (Y-Level) To export the data at"
-      file: "Source file attachment to export"
     modal:
       title: "Exporting {file} File"
       description: "Make sure all options are correct"
@@ -32,7 +55,20 @@ slash-commands:
         pattern:
           - "Block Pattern"
           - "WorldEdit compatible pattern to draw the geometry as."
+        projection:
+          label:
+            - Projection settings
+            -
+          sea:
+            - Southeast Asia
+            - ASEAN server projection used in Southeast Asia region
+          bte:
+            - BTE Default
+            - Default projection used in most Build-The-Earth server
         file-hint:
+          export:
+            - "Export Format Hints"
+            - "Multiple export formats available for this file type. Default selected are the most commonly used."
           label:
             - "File Format Hint"
             - "Hint the format of the source file to export. (unavailable formats are unsupported)"
@@ -60,3 +96,52 @@ slash-commands:
         file-if-uploaded:
           - "Source File Uploaded!"
           - "Using information from {filename} to exports."
+    verification:
+      warning-block-pattern:
+        - "Invalid Block Pattern"
+        - | 
+          Block pattern `{value}` is invalid, please input a WorldEdit-compatible block pattern.
+          Proceeding will fallback to `minecraft:diamond_block`.
+      warning-cannot-drop-height:
+        - "Cannot drop height value"
+      failure-height-value:
+        - "Invalid Height value"
+        - "`{value}` is invalid, please input a number."
+      failure-format-unsupported:
+        - "Unsupported file format"
+        - "`{filename}` is invalid, supported file formats are: `{value}`."
+      failure-format-not-found:
+        - "Cannot determined file type"
+        - "Cannot find file type for `{filename}`, supported file formats are: `{value}`."
+      verified-block-pattern:
+        - "Block Pattern valid"
+        - "This schematic will be written using `{value}`"
+      verified-height-normalized:
+        - "Height will be normalized"
+        - "Placing at the height of **{value}**"
+      verified-height-dropped:
+        - "Dropping Height data"
+        - "Height (Y-Level) will be ignored (Dropped)"
+      verified-height-offset:
+        - "Height will be added an offset"
+        - "Previous height data will be offset by **{value}**"
+  schematic:
+    name: "schematic"
+    description: "Upload or get Schematic file from master server"
+    schematic-get:
+      name: "get"
+      description: "Get schematic created by you"
+    schematic-upload:
+      name: "upload"
+      description: "Upload schematic to server"
+    options:
+      name: "Schematic file name to find"
+      private: "Export privately, final file will NOT be persistent"
+      file: "Source file attachment to upload"
+    modal:
+      file-upload:
+        - "Source File"
+        - "File to export the data from. Supports geojson, kml."
+      file-name:
+        - "File Name"
+        - "Schematic file name to find."

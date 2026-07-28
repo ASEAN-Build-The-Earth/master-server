@@ -15,6 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+/*
+ * Modified by Tin <tintinkung.lemonade@gmail.com> on 2026-07-29
+ * - Added compatibility for new discord components V2 API
+ */
 // package com.discordsrv.common.discord.api.entity.message.util;
 package asia.buildtheearth.asean.utils;
 
@@ -60,11 +64,6 @@ public final class SendableDiscordMessageUtil {
             }
         }
 
-        List<MessageEmbed> embeds = new ArrayList<>();
-        for (DiscordMessageEmbed embed : message.getEmbeds()) {
-            embeds.add(embed.toJDA());
-        }
-
         List<FileUpload> uploads = new ArrayList<>();
         for (Map.Entry<InputStream, String> attachment : message.getAttachments().entrySet()) {
             uploads.add(FileUpload.fromData(attachment.getKey(), attachment.getValue()));
@@ -75,6 +74,19 @@ public final class SendableDiscordMessageUtil {
         }
         if (!allowedRoles.isEmpty()) {
             builder = (T) builder.mentionRoles(allowedRoles.stream().mapToLong(l -> l).toArray());
+        }
+
+        if(message.isUsingComponentsV2()) {
+            builder.useComponentsV2();
+            return (T) builder
+                .setAllowedMentions(allowedTypes)
+                .setSuppressEmbeds(message.isSuppressedEmbeds())
+                .setFiles(uploads);
+        }
+
+        List<MessageEmbed> embeds = new ArrayList<>();
+        for (DiscordMessageEmbed embed : message.getEmbeds()) {
+            embeds.add(embed.toJDA());
         }
 
         return (T) builder

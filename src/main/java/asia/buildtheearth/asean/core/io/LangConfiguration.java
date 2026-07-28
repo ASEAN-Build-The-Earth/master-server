@@ -1,8 +1,7 @@
 package asia.buildtheearth.asean.core.io;
 
 import asia.buildtheearth.asean.MasterServer;
-import asia.buildtheearth.asean.core.providers.PluginProvider;
-import net.dv8tion.jda.internal.utils.Helpers;
+import asia.buildtheearth.asean.core.abstraction.AbstractPluginProvider;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,14 +11,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.stream.Stream;
 
-public class LangConfiguration extends PluginProvider {
-    private static final Function<Locale, String> RESOURCE = locale -> "lang/" + locale.toLanguageTag() + ".yml";
-
+public class LangConfiguration extends AbstractPluginProvider {
     private LanguageFile english;
 
-    private Map<String, LanguageFile> lang;
+    private Map<String, LanguageFile> registry;
+
+    @NotNull
+    public static String getPath(@NotNull Locale locale) {
+        return "lang/" + locale.toLanguageTag() + ".yml";
+    }
 
     public LangConfiguration(MasterServer plugin) {
         super(plugin);
@@ -39,8 +41,8 @@ public class LangConfiguration extends PluginProvider {
      * @return  Language file definition or {@code null}
      */
     public LanguageFile get(@NotNull Locale locale) {
-        if(this.lang == null) return null;
-        return this.lang.get(locale.toLanguageTag());
+        if(this.registry == null) return null;
+        return this.registry.get(locale.toLanguageTag());
     }
 
     /**
@@ -55,20 +57,24 @@ public class LangConfiguration extends PluginProvider {
                                      @NotNull BiFunction<LanguageFile, K, V> resolver) {
         Map<Locale, V> map = new HashMap<>();
 
-        if(this.lang != null) {
-            this.lang.entrySet().iterator().forEachRemaining(entry -> {
-                Locale locale = Locale.forLanguageTag(entry.getKey());
-                V value = resolver.apply(entry.getValue(), key);
+        if(this.registry != null) {
+            this.registry.forEach((tag, file) -> {
+                Locale locale = Locale.forLanguageTag(tag);
+                V value = resolver.apply(file, key);
 
-                if(value == null) return;
+                if (value == null) return;
 
-                if(value instanceof String seq && Helpers.isBlank(seq)) return;
+                if (value instanceof String seq && seq.isBlank()) return;
 
                 map.put(locale, value);
             });
         }
 
         return Collections.unmodifiableMap(map);
+    }
+
+    public Stream<Locale> available() {
+        return registry.keySet().stream().map(Locale::forLanguageTag);
     }
 
     /**
@@ -79,10 +85,12 @@ public class LangConfiguration extends PluginProvider {
      */
     public void initLanguageFiles() throws IOException, InvalidConfigurationException {
         // Load config from resource to the plugin
-        this.english = new LanguageFile();
+        Locale primary = Locale.ENGLISH;
+        this.english = new LanguageFile(primary);
 
         // We'd load more language here if we have budget
-        this.tryLoadLang(this.english, Locale.ENGLISH, Locale.UK, Locale.US);
+        this.tryLoadLang(this.english, getPath(primary));
+        this.putLanguageRegistry(this.english, primary, Locale.UK, Locale.US);
     }
 
     /**
@@ -94,11 +102,8 @@ public class LangConfiguration extends PluginProvider {
      * @throws IOException If embedded resource is not found (this should not ever happen)
      * @throws InvalidConfigurationException If embedded resource cannot be loaded.
      */
-    private void tryLoadLang(@NotNull LanguageFile lang,
-                             @NotNull Locale locale,
-                             Locale... mapping) throws IOException, InvalidConfigurationException {
-
-        String path = RESOURCE.apply(locale);
+    public void tryLoadLang(@NotNull LanguageFile lang,
+                             @NotNull String path) throws IOException, InvalidConfigurationException {
         File file = new File(this.plugin.getDataFolder(), path);
         if (!file.exists())
             this.plugin.saveResource(path, false);
@@ -111,13 +116,16 @@ public class LangConfiguration extends PluginProvider {
             );
             MasterServer.error("System Language File failed to load from data folder, falling back to embedded resource data.");
             lang.load(new InputStreamReader(resourceData));
-            return;
         }
+    }
 
+    private void putLanguageRegistry(@NotNull LanguageFile lang,
+                                     @NotNull Locale locale,
+                                     Locale... compatible) {
         // Register new language
-        if(this.lang == null) this.lang = new HashMap<>();
+        if(this.registry == null) this.registry = new HashMap<>();
 
-        this.lang.put(locale.toLanguageTag(), lang);
-        for(Locale map : mapping) this.lang.put(map.toLanguageTag(), lang);
+        this.registry.put(locale.toLanguageTag(), lang);
+        for(Locale map : compatible) this.registry.put(map.toLanguageTag(), lang);
     }
 }

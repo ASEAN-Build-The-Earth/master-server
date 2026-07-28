@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.shadow)
     alias(libs.plugins.git.version)
     alias(libs.plugins.run.paper)
+    alias(libs.plugins.run.waterfall) apply false
+    alias(libs.plugins.run.velocity) apply false
 }
 
 repositories {
@@ -45,8 +47,13 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.junit.jupiter.engine)
     testImplementation("com.discordsrv:api")
+    testImplementation(libs.adventure.api)
     testRuntimeOnly(libs.junit.platform.launcher)
     testCompileOnly(libs.jetbrains.annotations)
+    testImplementation(libs.paperapi.latest) {
+        // Constraints by DiscordSRV-Ascension sub-build
+        exclude("org.slf4j", "slf4j-api")
+    }
 }
 
 val versionDetails: Closure<VersionDetails> by extra
@@ -54,7 +61,7 @@ val details = versionDetails()
 
 group = "asia.buildtheearth.asean"
 description = "Server management plugin for ASEAN BTE Master Server"
-version = "0.0.0" + "-" + details.commitDistance + "-" + details.gitHash + "-SNAPSHOT"
+version = "1.0.0" + "-" + details.commitDistance + "-" + details.gitHash + "-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_21
 java.targetCompatibility = JavaVersion.VERSION_21
 
@@ -81,30 +88,31 @@ tasks.named<Test>("test") {
 }
 
 // region DiscordSRV-Ascension Submodule
-val discordsrv: IncludedBuild? = gradle.includedBuild("discordsrv-ascension");
+val discordsrv: IncludedBuild = gradle.includedBuild("discordsrv-ascension");
 
 val cleanDiscordSRVJarDir = tasks.register<Delete>("cleanDiscordSRVJarDir") {
-    delete(discordsrv?.projectDir?.resolve("jars"))
+    description = "Clear all Jar file in DiscordSRV output directory"
+    delete(discordsrv.projectDir.resolve("jars"))
 }
 
 val buildBukkitDiscordSRV = tasks.register("buildBukkitDiscordSRV") {
-    val jarDiscordSRV = discordsrv?.task(":bukkit:bukkit-loader:jar")
-        ?: throw IllegalStateException("DiscordSRV submodule not found, is it included?")
+    description = "Build Jar for DiscordSRV-Ascension (Bukkit)"
+    val jarDiscordSRV = discordsrv.task(":bukkit:bukkit-loader:jar")
 
     dependsOn(jarDiscordSRV)
-}!!
+}
 
 /**
  * Get the latest JAR file of DiscordSRV-Ascension submodule
  */
 fun getDiscordSRV(): File {
-    val dir = discordsrv?.projectDir?.resolve("jars")
+    val dir = discordsrv.projectDir.resolve("jars")
     val err = FileNotFoundException(
         "DiscordSRV required to be built first before :runServer, "
         + "do :buildBukkitDiscordSRV"
     )
 
-    val files: Array<File> = dir?.listFiles() ?: throw err
+    val files: Array<File> = dir.listFiles() ?: throw err
     files.sortByDescending { it.lastModified() }
     val file: File = files.getOrNull(0) ?: throw err
 

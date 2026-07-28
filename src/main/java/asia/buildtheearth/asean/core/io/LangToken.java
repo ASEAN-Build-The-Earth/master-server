@@ -11,6 +11,9 @@ public interface LangToken {
     String OWNER = "{owner}";
 
     /** Replaced with the Discord thread's snowflake ID. */
+    String SNOWFLAKE = "{snowflake}";
+
+    /** Replaced with the Discord thread's snowflake ID. */
     String THREAD_ID = "{threadID}";
 
     /** Replaced with the Discord message's snowflake ID. */
@@ -31,8 +34,8 @@ public interface LangToken {
     /** Replaced with the absolute path of a referenced file. */
     String PATH = "{path}";
 
-    /** Replaced with a custom-defined label message. */
-    String LABEL = "{label}";
+    /** Replaced with a custom-defined value message. */
+    String VALUE = "{value}";
 
     /** Replaced with the simple class name of an event (usually {@link Class#getSimpleName()}). */
     String EVENT = "{event}";

@@ -1,14 +1,70 @@
 
 # ========================
-# Main Discord Server Guild ID
+# IMPORTANT: Main Guild (Discord Server) configuration.
 # ========================
-main-guild-id: ""
-
-# ========================
-# System Notification Settings
-# ========================
-notification:
-  channel-id: ""
+main-guild:
+  guild-id: ""
+  # ========================
+  # System Notification Settings
+  # ========================
+  notification-channel-id: ""
+  # ========================
+  # IMPORTANT: Main/Official builder role for allowing access
+  #            to sensitive commands/tools for the server.
+  # Permission alias: OFFICIAL_BUILDER
+  # ========================
+  official-builder-role-id: ""
+  # ========================
+  # Optional accent roles for specifying as command's allowed permissions.
+  # List of ids are also allowed
+  # ========================
+  # STAFF: Staff role
+  # BUILDER: Plot builders, Trial builders, Tutorial builders, Builder from other team(S)
+  # VISITOR: Visitor roles
+  # DEVELOPER: Developer Role
+  role-id:
+    staff: ""
+    member: ""
+    builder: ""
+    developer: ""
+  # ========================
+  # Guild slash commands permission readings
+  # All parent paths identify a command, do not change
+  # e.g. /geotools export kml: slash-geotools.export-kml
+  # ========================
+  # permission (one-off)
+  # - DENY: disable this command
+  # - NONE: allow anyone
+  # - OWNER: allow the owner of the discord's main guild
+  # - ADMINISTRATOR: allow discord user with administrator permission
+  # - OFFICIAL_BUILDER: special builder role that must be able to check for linked Minecraft account
+  # [optional] provide if any role are require for this command
+  # role: STAFF, BUILDER, MEMBER, DEVELOPER
+  slash-commands:
+    # ========================
+    # Command with default OFFICIAL_BUILDER permission cannot be weaken (except disabling it)
+    # as it require the role for checking linked Minecraft account
+    # !!! command with NONE permission and no role requirement will be a public command
+    # ========================
+    slash-schematic:
+      sub-commands:
+        get: OFFICIAL_BUILDER
+        upload: OFFICIAL_BUILDER
+    slash-geotools:
+      sub-commands:
+        draw: OFFICIAL_BUILDER
+        export-schematic:
+          permission: NONE
+          role: BUILDER
+        export-geojson:
+          permission: NONE
+          role: BUILDER
+        export-kml:
+          permission: NONE
+          role: BUILDER
+    slash-reload:
+      permission: ADMINISTRATOR
+      role: STAFF, DEVELOPER
 
 # ========================
 # Master Server Database

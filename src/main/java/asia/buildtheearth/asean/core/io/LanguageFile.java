@@ -1,85 +1,76 @@
 package asia.buildtheearth.asean.core.io;
 
-import net.dv8tion.jda.api.EmbedBuilder;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.Locale;
 
 public class LanguageFile extends YamlConfiguration {
+    private final Locale locale;
+
+    public LanguageFile(Locale locale) {
+        this.locale = locale;
+    }
 
     public static final String NULL_LANG = "undefined";
 
-    public record EmbedLang(String title, String description) {
-        /**
-         * Consume The information "as" something else.
-         *
-         * @param consumer consumer function
-         * @param <T> Result of the consumption
-         * @return The consumer {@linkplain BiFunction#apply(Object, Object) applied}
-         */
-        public <T> T as(@NotNull BiFunction<String, String, T> consumer) {
-            return consumer.apply(title(), description());
-        }
-    };
+    public Locale getLocale() {
+        return this.locale;
+    }
 
     @NotNull
     public String get(@NotNull String key) {
-        return this.getString(key, NULL_LANG);
+        return this.getString(key, getNull(key));
     }
 
     @NotNull
-    public <T extends LangEntry> String get(@NotNull T config) {
-        return this.getString(config.getKey(), NULL_LANG);
+    public <T extends LangEntry> String get(@NotNull T entry) {
+        return this.getString(entry.getKey(), getNull(entry));
     }
 
     @NotNull
-    public EmbedLang getEmbed(@NotNull String key,
-                              @Nullable String defaultValue) {
-        List<String> lang = this.getStringList(key);
+    public LangPair<String> getPair(@NotNull String key,
+                                    @Nullable String defaultValue) {
+        java.util.List<String> lang = this.getStringList(key);
 
         String title = !lang.isEmpty() ? lang.getFirst() : defaultValue;
         String description = lang.size() > 1 ? lang.get(1) : defaultValue;
 
-        return new EmbedLang(title, description);
+        return new LangPair<>(title, description);
     }
 
     @NotNull
-    public <T extends LangEntry> EmbedLang getEmbed(@NotNull T config) {
-        return this.getEmbed(config.getKey(), NULL_LANG);
+    public <T extends LangEntry> LangPair<String> getPair(@NotNull T entry) {
+        return this.getPair(entry.getKey(), getNull(entry));
     }
 
     @NotNull
-    public <T extends LangEntry> EmbedLang getEmbed(@NotNull T config,
-                                                    @Nullable String defaultValue) {
-        return this.getEmbed(config.getKey(), defaultValue);
+    public <T extends LangEntry> LangPair<String> getPair(@NotNull T entry,
+                                                          @Nullable String defaultValue) {
+        return this.getPair(entry.getKey(), defaultValue);
     }
 
-    @NotNull
-    public <T extends LangEntry> EmbedBuilder getEmbedBuilder(@NotNull T config,
-                                                              @NotNull Function<String, String> title,
-                                                              @NotNull Function<String, String> description) {
-        List<String> lang = this.getStringList(config.getKey());
-        EmbedBuilder embed = new EmbedBuilder();
-
-        if(!lang.isEmpty()) embed.setTitle(title.apply(lang.getFirst()));
-        if(lang.size() > 1) embed.setDescription(description.apply(lang.get(1)));
-
-        return embed;
+    /**
+     * Returns {@value #NULL_LANG}-{@linkplain Integer#toHexString}.
+     *
+     * @param key Any object with functionable {@link #hashCode()} method
+     * @return Default fallback lang concatenated by the key's hashcode.
+     * @param <T> Type of the null value
+     */
+    @Contract("_ -> new")
+    private <T> @NotNull String getNull(@NotNull T key) {
+        return String.join("-", NULL_LANG, Integer.toHexString(key.hashCode()));
     }
 
-    @NotNull
-    public <T extends LangEntry> EmbedBuilder getEmbedBuilder(@NotNull T config) {
-        return this.getEmbedBuilder(config, Function.identity(), Function.identity());
+    @Contract("_ -> new")
+    private @NotNull String getNull(@NotNull LangEntry entry) {
+        return getNull(entry.getKey());
     }
 
-    @NotNull
-    public <T extends LangEntry> EmbedBuilder getEmbedBuilder(@NotNull T config,
-                                                              @NotNull Function<String, String> description) {
-        return this.getEmbedBuilder(config, Function.identity(), description);
-
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

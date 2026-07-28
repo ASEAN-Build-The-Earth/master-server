@@ -2,7 +2,9 @@ package asia.buildtheearth.asean;
 
 import java.awt.Color;
 
-public abstract class Constants {
+public final class Constants {
+    private Constants() {}
+
     /** Red accent color (HEX: #{@code DD2E44FF})*/
     public static final Color RED    = new Color(14495300);
 
